@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "389212456788",
+    "project_id": "random-picker-fe866",
+    "storage_bucket": "random-picker-fe866.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:389212456788:android:cfb1a97c71ab0d23da2ac1",
+        "android_client_info": {
+          "package_name": "com.sheeranergaon.randompicker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "389212456788-bqknvpamu9ekt35208n8lhskckqiu5nl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1a_plkNsbakZ_gL2YTLtL79owE5iumk0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "389212456788-bqknvpamu9ekt35208n8lhskckqiu5nl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
