@@ -9,8 +9,12 @@
         android:icon="@mipmap/ic_launcher"
         android:label="Random Picker"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
+        android:supportsRtl="false"
         android:theme="@style/Theme.RandomPicker">
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713"/>
 
         <activity
             android:name=".LoginActivity"
@@ -24,7 +28,6 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".NamesActivity" />
         <activity android:name=".RaffleActivity" />
-
 
     </application>
 

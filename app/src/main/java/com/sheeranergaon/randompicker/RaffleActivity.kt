@@ -1,7 +1,5 @@
 package com.sheeranergaon.randompicker
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -10,10 +8,15 @@ import android.os.Looper
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import kotlin.random.Random
 
 class RaffleActivity : AppCompatActivity() {
@@ -25,6 +28,9 @@ class RaffleActivity : AppCompatActivity() {
     private val bubbles = mutableListOf<TextView>()
     private val handler = Handler(Looper.getMainLooper())
     private var winnerChosen = false
+    private var isPremium = false
+
+    private var mInterstitialAd: InterstitialAd? = null
 
     private val bubbleBackgrounds = listOf(
         R.drawable.bubble_background_blue,
@@ -34,20 +40,22 @@ class RaffleActivity : AppCompatActivity() {
         R.drawable.bubble_background_orange
     )
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_raffle)
+
+        isPremium = MainActivity.isPremiumSession
 
         bubbleContainer = findViewById(R.id.bubbleContainer)
         tvWinner = findViewById(R.id.tvWinner)
         btnBackHome = findViewById(R.id.btnBackHome)
 
+        if (!isPremium) {
+            loadInterstitialAd()
+        }
+
         btnBackHome.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
-            finish()
+            showAdAndGoHome()
         }
 
         val names = intent.getStringArrayExtra("EXTRA_NAMES")?.toList() ?: emptyList()
@@ -57,13 +65,41 @@ class RaffleActivity : AppCompatActivity() {
         }
 
         showNameBubbles(names)
-
-        // Start the "swirl" effect
         startCrazyAnimation()
 
-        // Choose winner after 3–5 seconds
         val delayMillis = Random.nextLong(3000L, 5000L)
         handler.postDelayed({ chooseWinner() }, delayMillis)
+    }
+
+    private fun loadInterstitialAd() {
+        if (isPremium) return
+        val adRequest = AdRequest.Builder().build()
+        InterstitialAd.load(this, "ca-app-pub-3940256099942544/1033173712", adRequest,
+            object : InterstitialAdLoadCallback() {
+                override fun onAdFailedToLoad(adError: LoadAdError) { mInterstitialAd = null }
+                override fun onAdLoaded(ad: InterstitialAd) {
+                    mInterstitialAd = ad
+                    mInterstitialAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
+                        override fun onAdDismissedFullScreenContent() { navigateToMainActivity() }
+                        override fun onAdFailedToShowFullScreenContent(p0: AdError) { navigateToMainActivity() }
+                    }
+                }
+            })
+    }
+
+    private fun showAdAndGoHome() {
+        if (isPremium || mInterstitialAd == null) {
+            navigateToMainActivity()
+        } else {
+            mInterstitialAd?.show(this)
+        }
+    }
+
+    private fun navigateToMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+        finish()
     }
 
     private fun showNameBubbles(names: List<String>) {
@@ -80,8 +116,6 @@ class RaffleActivity : AppCompatActivity() {
                 setTextColor(Color.WHITE)
                 gravity = Gravity.CENTER
                 setPadding(32, 16, 32, 16)
-
-                // 🌈 Random bubble background here:
                 background = getDrawable(bubbleBackgrounds.random())
             }
 
@@ -103,15 +137,12 @@ class RaffleActivity : AppCompatActivity() {
         val screenWidth = displayMetrics.widthPixels.toFloat()
         val screenHeight = displayMetrics.heightPixels.toFloat()
 
-        // how far they are allowed to roam
-        val maxOffsetX = screenWidth * 0.4f      // left/right
-        val maxOffsetY = screenHeight * 0.7f     // top → almost bottom
+        val maxOffsetX = screenWidth * 0.4f
+        val maxOffsetY = screenHeight * 0.7f
 
         bubbles.forEach { bubble ->
-            // 🔸 give each bubble a random starting offset on screen
-            bubble.translationX = (Random.nextFloat() - 0.5f) * maxOffsetX * 2f   // -maxX .. +maxX
-            bubble.translationY = Random.nextFloat() * maxOffsetY                 // 0 .. maxY
-
+            bubble.translationX = (Random.nextFloat() - 0.5f) * maxOffsetX * 2f
+            bubble.translationY = Random.nextFloat() * maxOffsetY
             animateBubbleCrazy(bubble, maxOffsetX, maxOffsetY)
         }
     }
@@ -119,10 +150,8 @@ class RaffleActivity : AppCompatActivity() {
     private fun animateBubbleCrazy(view: View, maxOffsetX: Float, maxOffsetY: Float) {
         if (winnerChosen) return
 
-        // 🔸 new random target anywhere in allowed area
-        val targetX = (Random.nextFloat() - 0.5f) * maxOffsetX * 2f   // -maxX .. +maxX
-        val targetY = Random.nextFloat() * maxOffsetY                 // 0 .. maxY
-
+        val targetX = (Random.nextFloat() - 0.5f) * maxOffsetX * 2f
+        val targetY = Random.nextFloat() * maxOffsetY
         val targetScale = if (Random.nextBoolean()) 1.15f else 0.9f
         val duration = Random.nextLong(500L, 900L)
 
@@ -148,10 +177,8 @@ class RaffleActivity : AppCompatActivity() {
         val winnerBubble = bubbles[winnerIndex]
         val winnerName = winnerBubble.text.toString()
 
-        // Stop all animations
         bubbles.forEach { it.animate().cancel() }
 
-        // Fade out others
         bubbles.forEachIndexed { index, bubble ->
             if (index != winnerIndex) {
                 bubble.animate()
@@ -161,18 +188,14 @@ class RaffleActivity : AppCompatActivity() {
             }
         }
 
-        // Make winner bubble stand out a bit
         winnerBubble.animate()
             .scaleX(1.2f)
             .scaleY(1.2f)
             .setDuration(300L)
             .start()
 
-        // Put winner text at the top
         tvWinner.text = "Winner: $winnerName"
         tvWinner.visibility = View.VISIBLE
-
         btnBackHome.visibility = View.VISIBLE
     }
-
 }

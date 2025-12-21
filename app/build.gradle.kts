@@ -43,6 +43,7 @@ dependencies {
     implementation("com.firebaseui:firebase-ui-auth:8.0.0")
     implementation("com.google.android.gms:play-services-auth:20.7.0")
     implementation ("com.google.firebase:firebase-database-ktx:21.0.0")
+    implementation("com.google.android.gms:play-services-ads:23.6.0")
 
 
 
