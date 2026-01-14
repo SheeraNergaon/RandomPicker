@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_input"
+    android:backgroundTint="#FFFFFF"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Do you like our app?"
+        android:textColor="#212121"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="8dp"
+        android:text="Share our app with your community"
+        android:textColor="#757575"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:layout_marginVertical="24dp"
+        android:src="@android:drawable/ic_menu_share"
+        app:tint="#9C27B0" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end">
+
+        <Button
+            android:id="@+id/btnNoThanks"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No, Thanks"
+            android:textColor="#757575"
+            android:textStyle="bold"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/btnSure"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SURE"
+            android:textColor="#9C27B0"
+            android:textStyle="bold"
+            android:textAllCaps="false" />
+    </LinearLayout>
+</LinearLayout>

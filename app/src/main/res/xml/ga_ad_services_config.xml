@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ad-services-config>
+    <attest-ad-id-request-policy-enabled>true</attest-ad-id-request-policy-enabled>
+</ad-services-config>

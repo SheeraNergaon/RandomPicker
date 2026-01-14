@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.sheeranergaon.randompicker">
 
     <application
@@ -11,6 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/Theme.RandomPicker">
+
+        <property
+            android:name="android.adservices.AD_SERVICES_CONFIG"
+            android:resource="@xml/ga_ad_services_config"
+            tools:replace="android:resource" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
@@ -28,6 +34,14 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".NamesActivity" />
         <activity android:name=".RaffleActivity" />
+
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
     </application>
 

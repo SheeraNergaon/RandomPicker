@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_input"
+    android:backgroundTint="#FFFFFF"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"
+        android:src="@android:drawable/btn_star_big_on"
+        app:tint="#D1C4E9" /> <TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:text="Enjoy Our App"
+    android:textColor="#212121"
+    android:textSize="22sp"
+    android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="If you enjoy using our app,\nPlease rate us"
+        android:textColor="#757575"
+        android:textSize="16sp" />
+
+    <RatingBar
+        android:id="@+id/dialogRatingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:numStars="5"
+        android:rating="4"
+        android:progressTint="#FFD700"
+        android:secondaryProgressTint="#FFD700" />
+
+    <Button
+        android:id="@+id/btnContinue"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#9575CD"
+        android:text="RATE NOW"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/btnCancelRate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:paddingTop="16dp"
+        android:text="CANCEL"
+        android:textColor="#757575"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:clickable="true"
+        android:focusable="true" />
+</LinearLayout>
